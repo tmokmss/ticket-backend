@@ -7,6 +7,6 @@ export class TravelStage extends Stage {
         super(scope, id, props);
 
         const ticket = new TicketServiceStack(this, 'TicketServiceStack');
-        new StorageStack(this, StorageStack);
+        new StorageStack(this, 'StorageStack');
     }
 }
