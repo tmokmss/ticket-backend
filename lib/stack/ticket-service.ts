@@ -21,6 +21,7 @@ export class TicketServiceStack extends cdk.Stack {
         const api = new gw.RestApi(this, 'api', {
             restApiName: 'octankTravel'
         });
+        
         const tickets = api.root.addResource('tickets', {
             defaultIntegration: integration,
             defaultCorsPreflightOptions: {

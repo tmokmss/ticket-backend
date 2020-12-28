@@ -31,6 +31,6 @@ export class CicdBackendStack extends Stack {
          }),
       });
 
-      pipeline.addApplicationStage(new TravelStage(this, `ticket-stage`))
+      pipeline.addApplicationStage(new TravelStage(this, `travel-stage`))
     }
   }
