@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from '@aws-cdk/core';
+import { CicdBackendStack } from '../lib/stack/cicd-backend';
 import { CognitoStack } from '../lib/stack/cognito';
-
 import { NetworkStack } from '../lib/stack/network';
 import { TicketServiceStack } from '../lib/stack/ticket-service';
 
@@ -12,3 +12,4 @@ const vpc = new NetworkStack(app, prefix + 'NetworkStack');
 
 const cognito = new CognitoStack(app, prefix + 'CognitoStack');
 const ticket = new TicketServiceStack(app, prefix + 'TicketServiceStack');
+new CicdBackendStack(app, prefix + 'CicdBackendStack');
