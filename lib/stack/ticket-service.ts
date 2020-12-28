@@ -1,8 +1,6 @@
 import * as cdk from '@aws-cdk/core';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as gw from '@aws-cdk/aws-apigateway';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
-import { GenericWindowsImage } from '@aws-cdk/aws-ec2';
 
 export interface TicketServiceStackProps extends cdk.StackProps {
 }
@@ -21,7 +19,7 @@ export class TicketServiceStack extends cdk.Stack {
         const api = new gw.RestApi(this, 'api', {
             restApiName: 'octankTravel'
         });
-        
+
         const tickets = api.root.addResource('tickets', {
             defaultIntegration: integration,
             defaultCorsPreflightOptions: {
