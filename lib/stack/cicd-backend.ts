@@ -2,6 +2,8 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+import { TravelStage } from '../stage/travel';
+import { TicketServiceStack } from './ticket-service';
 
 export class CicdBackendStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
@@ -29,6 +31,6 @@ export class CicdBackendStack extends Stack {
          }),
       });
 
-      // pipeline.addApplicationStage()
+      pipeline.addApplicationStage(new TravelStage(this, `ticket-stage`))
     }
   }
