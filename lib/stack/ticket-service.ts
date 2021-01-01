@@ -12,6 +12,10 @@ export class TicketServiceStack extends cdk.Stack {
         const handler = new lambdanode.NodejsFunction(this, 'handler', {
             entry: 'backend/ticket/main.ts',
             handler: 'lambdaHandler',
+            depsLockFilePath: 'backend/ticket/package-lock.json',
+            bundling: {
+                tsconfig: 'backend/ticket/tsconfig.json'
+            }
         });
 
         // const integration = new gw.LambdaIntegration(handler);
