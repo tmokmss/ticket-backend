@@ -2,7 +2,7 @@
   "name": "octank-travel",
   "version": "0.1.0",
   "bin": {
-    "proto-suntory": "bin/cdk.js"
+    "travel": "bin/cdk.js"
   },
   "scripts": {
     "build": "tsc",

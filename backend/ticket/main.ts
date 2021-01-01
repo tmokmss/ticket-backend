@@ -4,7 +4,7 @@ import { app } from "./app"
 
 const server = express.createServer(app);
 
-export const lambdaHandler = async (
+export const lambdaHandler = (
     event: APIGatewayProxyEvent,
     context: Context
 ) => {
