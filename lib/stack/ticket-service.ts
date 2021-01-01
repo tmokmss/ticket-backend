@@ -13,23 +13,23 @@ export class TicketServiceStack extends cdk.Stack {
             entry: 'backend/ticket/main.ts',
             handler: 'lambdaHandler',
         });
-        
-        const integration = new gw.LambdaIntegration(handler);
 
-        const api = new gw.RestApi(this, 'api', {
-            restApiName: 'octankTravel'
+        // const integration = new gw.LambdaIntegration(handler);
+
+        // const api = new gw.RestApi(this, 'api', {
+        //     restApiName: 'octankTravel'
+        // });
+
+        // const tickets = api.root.addResource('tickets', {
+        //     defaultIntegration: integration,
+        //     defaultCorsPreflightOptions: {
+        //         allowOrigins: gw.Cors.ALL_ORIGINS,
+        //         allowMethods: gw.Cors.ALL_METHODS,
+        //     }
+        // });
+
+        new gw.LambdaRestApi(this, 'gw', {
+            handler: handler,
         });
-
-        const tickets = api.root.addResource('tickets', {
-            defaultIntegration: integration,
-            defaultCorsPreflightOptions: {
-                allowOrigins: gw.Cors.ALL_ORIGINS,
-                allowMethods: gw.Cors.ALL_METHODS,
-            }
-        });
-
-        // new gw.LambdaRestApi(this, 'gw', {
-        //     handler: handler,
-        // })
     }
 }
