@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as middleware from 'aws-serverless-express/middleware'
 
-export const app = express.application;
+export const app = express();
 const router = express.Router();
 
 // app.use((req, res, next) => {
