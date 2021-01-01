@@ -14,7 +14,12 @@ export class TicketServiceStack extends cdk.Stack {
             handler: 'lambdaHandler',
             depsLockFilePath: 'backend/ticket/package-lock.json',
             bundling: {
-                tsconfig: 'backend/ticket/tsconfig.json'
+                minify: true,
+                tsconfig: 'backend/ticket/tsconfig.json',
+                nodeModules: [
+                    "aws-serverless-express",
+                    "express",
+                ],
             }
         });
 
