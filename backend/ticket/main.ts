@@ -1,14 +1,12 @@
-import {
-    APIGatewayProxyEvent,
-    APIGatewayProxyResult
-} from "aws-lambda";
+import * as express from "aws-serverless-express";
+import { APIGatewayProxyEvent, Context } from "aws-lambda";
+import { app } from "./app"
+
+const server = express.createServer(app);
 
 export const lambdaHandler = async (
-    event: APIGatewayProxyEvent
-): Promise<APIGatewayProxyResult> => {
-    const queries = JSON.stringify(event.queryStringParameters);
-    return {
-        statusCode: 200,
-        body: `Queries: ${queries}`
-    }
+    event: APIGatewayProxyEvent,
+    context: Context
+) => {
+    express.proxy(server, event, context);
 }

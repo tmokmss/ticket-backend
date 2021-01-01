@@ -12,8 +12,8 @@ export class TicketServiceStack extends cdk.Stack {
         const handler = new lambdanode.NodejsFunction(this, 'handler', {
             entry: 'backend/ticket/main.ts',
             handler: 'lambdaHandler',
-
-        })
+        });
+        
         const integration = new gw.LambdaIntegration(handler);
 
         const api = new gw.RestApi(this, 'api', {
