@@ -39,7 +39,7 @@ export class CodePipelineNotification extends Construct {
             ],
             effect: iam.Effect.ALLOW,
             resources: [
-                rule.ref,
+                props.topic.topicArn,
             ]
         }))
     }
