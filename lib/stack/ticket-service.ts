@@ -9,36 +9,37 @@ export class TicketServiceStack extends cdk.Stack {
     constructor(scope: cdk.Construct, id: string, props?: TicketServiceStackProps) {
         super(scope, id, props);
 
-        const handler = new lambdanode.NodejsFunction(this, 'handler', {
-            entry: 'backend/ticket/main.ts',
-            handler: 'lambdaHandler',
-            depsLockFilePath: 'backend/ticket/package-lock.json',
-            bundling: {
-                minify: false,
-                tsconfig: 'backend/ticket/tsconfig.json',
-                nodeModules: [
-                    "aws-serverless-express",
-                    "express",
-                ],
-            }
+        const api = new gw.RestApi(this, 'api', {
+            restApiName: 'Travel Backend'
         });
 
-        // const integration = new gw.LambdaIntegration(handler);
+        {
+            const handler = new lambdanode.NodejsFunction(this, 'handler', {
+                entry: 'backend/ticket/main.ts',
+                handler: 'lambdaHandler',
+                depsLockFilePath: 'backend/ticket/package-lock.json',
+                bundling: {
+                    minify: false,
+                    tsconfig: 'backend/ticket/tsconfig.json',
+                    nodeModules: [
+                        "aws-serverless-express",
+                        "express",
+                    ],
+                }
+            });
 
-        // const api = new gw.RestApi(this, 'api', {
-        //     restApiName: 'octankTravel'
-        // });
+            const integration = new gw.LambdaIntegration(handler);
+            const tickets = api.root.addResource('tickets', {
+                defaultIntegration: integration,
+                defaultCorsPreflightOptions: {
+                    allowOrigins: gw.Cors.ALL_ORIGINS,
+                    allowMethods: gw.Cors.ALL_METHODS,
+                }
+            });
 
-        // const tickets = api.root.addResource('tickets', {
-        //     defaultIntegration: integration,
-        //     defaultCorsPreflightOptions: {
-        //         allowOrigins: gw.Cors.ALL_ORIGINS,
-        //         allowMethods: gw.Cors.ALL_METHODS,
-        //     }
-        // });
-
-        new gw.LambdaRestApi(this, 'gw', {
-            handler: handler,
-        });
+            tickets.addProxy({
+                defaultIntegration: integration,
+            });
+        }
     }
 }

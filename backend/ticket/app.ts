@@ -17,6 +17,7 @@ router.use(middleware.eventContext());
 router.get('/api/getTest', (req: express.Request, res: express.Response) => {
     res.send(req.query)
 })
+
 router.post('/api/postTest', (req: express.Request, res: express.Response) => {
     res.send(req.body)
 })
