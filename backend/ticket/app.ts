@@ -22,4 +22,4 @@ router.post('/api/postTest', (req: express.Request, res: express.Response) => {
     res.send(req.body)
 })
 
-app.use(router);
+app.use('/tickets', router);
