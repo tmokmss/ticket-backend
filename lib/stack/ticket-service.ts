@@ -34,7 +34,7 @@ export class TicketServiceStack extends cdk.Stack {
                 defaultCorsPreflightOptions: {
                     allowOrigins: gw.Cors.ALL_ORIGINS,
                     allowMethods: gw.Cors.ALL_METHODS,
-                }
+                },
             });
 
             tickets.addProxy({
