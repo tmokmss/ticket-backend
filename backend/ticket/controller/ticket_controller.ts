@@ -1,26 +1,11 @@
-import * as aws from "aws-sdk";
 import { Request, Response } from "express";
-
-aws.config.update({
-    region: process.env.AWS_REGION ?? 'ap-northeast-1',
-});
-
-const ddb = aws.DynamoDB;
-const docClient = new ddb.DocumentClient();
-const ticketTableName = 'travel-stage-StorageStack-ticketTable4EA4FD6F-C75N5FQ85560';
+import { Ticket } from "../model/ticket";
 
 export async function createTicket(req: Request, res: Response) {
     const travelId = req.body.travelId;
 
     try {
-        const response = await docClient.put({
-            TableName: ticketTableName,
-            Item: {
-                "userId": getUserId(),
-                "travelId": travelId,
-                "boughtAt": Date.now(),
-            },
-        }).promise();
+        const response = await Ticket.create(getUserId(), travelId);
         res.send(response);
     } catch (e) {
         console.log(e);
@@ -28,7 +13,14 @@ export async function createTicket(req: Request, res: Response) {
     }
 }
 
-export async function getTicket(req: Request, res: Response) {
+export async function getTickets(req: Request, res: Response) {
+    try {
+        const response = await Ticket.query(getUserId());
+        res.send(response);
+    } catch (e) {
+        console.log(e);
+        res.send(e);
+    }
 }
 
 function getUserId() {

@@ -24,9 +24,9 @@ app.post('/postTest', (req: express.Request, res: express.Response) => {
 
 {
     const router = express.Router();
-    router.get('/', ticketController.getTicket);
+    router.get('/', ticketController.getTickets);
     router.post('/', ticketController.createTicket);
-    router.put('/:ticketId', ticketController.createTicket);
+    // router.put('/:ticketId', ticketController.createTicket);
     router.delete('/:ticketId', ticketController.createTicket);
 
     app.use('/tickets', router);
