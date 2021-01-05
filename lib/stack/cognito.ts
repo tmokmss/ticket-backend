@@ -3,7 +3,6 @@ import * as cognito from '@aws-cdk/aws-cognito';
 import { NetworkStack } from './network';
 
 export interface CognitoStackProps extends cdk.StackProps {
-    readonly network?: NetworkStack,
 }
 
 export class CognitoStack extends cdk.Stack {
