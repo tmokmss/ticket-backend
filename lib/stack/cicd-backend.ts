@@ -1,7 +1,5 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as sns from '@aws-cdk/aws-sns';
-import * as sqs from '@aws-cdk/aws-sqs';
-import * as subscriptions from '@aws-cdk/aws-sns-subscriptions';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
@@ -30,20 +28,15 @@ export class CicdBackendStack extends Stack {
             synthAction: SimpleSynthAction.standardNpmSynth({
                 sourceArtifact,
                 cloudAssemblyArtifact,
-                buildCommand: 'npm run build'
+                buildCommand: 'npm run build',
             }),
         });
-
-        const topic = new sns.Topic(this, `topic`, {
-
-        });
-
-        const queue = new sqs.Queue(this, 'queue');
-
-        topic.addSubscription(new subscriptions.SqsSubscription(queue));
-
+        
         pipeline.addApplicationStage(new DevStage(this, `dev-stage`));
-
+        const testStage = pipeline.addStage('Test');
+        testStage.addActions()
+        
+        const topic = new sns.Topic(this, `topic`);
         new CodePipelineNotification(this, `notification`, {
             topic: topic,
             pipeline: pipeline.codePipeline,
