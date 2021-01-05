@@ -20,6 +20,7 @@ export class TicketServiceStack extends cdk.Stack {
             type: gw.AuthorizationType.COGNITO,
             providerArns: [props.cognito.userPool.userPoolArn],
             identitySource: "Authorization",
+            name: "CognitoAuthorizer",
         });
 
         {
