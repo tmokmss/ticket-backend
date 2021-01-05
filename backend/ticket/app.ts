@@ -1,8 +1,8 @@
 import express from 'express';
 import * as middleware from 'aws-serverless-express/middleware'
+import * as ticketController from "./controller/ticket_controller"
 
 export const app = express();
-const router = express.Router();
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
@@ -12,14 +12,22 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-router.use(middleware.eventContext());
+app.use(middleware.eventContext());
 
-router.get('/api/getTest', (req: express.Request, res: express.Response) => {
+app.get('/getTest', (req: express.Request, res: express.Response) => {
     res.send(req.query)
 });
 
-router.post('/api/postTest', (req: express.Request, res: express.Response) => {
+app.post('/postTest', (req: express.Request, res: express.Response) => {
     res.send(req.body)
 });
 
-app.use('/tickets', router);
+{
+    const router = express.Router();
+    router.get('/', ticketController.getTicket);
+    router.post('/', ticketController.createTicket);
+    router.put('/:ticketId', ticketController.createTicket);
+    router.delete('/:ticketId', ticketController.createTicket);
+
+    app.use('/tickets', router);
+}
