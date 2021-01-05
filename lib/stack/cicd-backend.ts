@@ -33,8 +33,8 @@ export class CicdBackendStack extends Stack {
         });
         
         pipeline.addApplicationStage(new DevStage(this, `dev-stage`));
-        const testStage = pipeline.addStage('Test');
-        testStage.addActions()
+        // const testStage = pipeline.addStage('Test');
+        // testStage.addActions()
         
         const topic = new sns.Topic(this, `topic`);
         new CodePipelineNotification(this, `notification`, {
