@@ -1,11 +1,12 @@
 import * as cdk from '@aws-cdk/core';
 import * as cognito from '@aws-cdk/aws-cognito';
-import { NetworkStack } from './network';
 
 export interface CognitoStackProps extends cdk.StackProps {
 }
 
 export class CognitoStack extends cdk.Stack {
+    readonly userPool: cognito.UserPool;
+
     constructor(scope: cdk.Construct, id: string, props?: CognitoStackProps) {
         super(scope, id, props);
         const userPool = new cognito.UserPool(this, 'userPool', {
@@ -29,5 +30,7 @@ export class CognitoStack extends cdk.Stack {
         //     userPoolId: userPool.userPoolId,
         //     groupName: 'admin',
         // })
+
+        this.userPool = userPool;
     }
 }

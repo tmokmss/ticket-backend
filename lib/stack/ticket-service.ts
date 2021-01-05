@@ -1,16 +1,25 @@
 import * as cdk from '@aws-cdk/core';
 import * as gw from '@aws-cdk/aws-apigateway';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
+import { CognitoStack } from './cognito';
 
 export interface TicketServiceStackProps extends cdk.StackProps {
+    cognito: CognitoStack,
 }
 
 export class TicketServiceStack extends cdk.Stack {
-    constructor(scope: cdk.Construct, id: string, props?: TicketServiceStackProps) {
+    constructor(scope: cdk.Construct, id: string, props: TicketServiceStackProps) {
         super(scope, id, props);
 
         const api = new gw.RestApi(this, 'api', {
-            restApiName: 'Travel Backend'
+            restApiName: 'Travel Backend',
+        });
+
+        const auth = new gw.CfnAuthorizer(this, 'authorizer', {
+            restApiId: api.restApiId,
+            type: gw.AuthorizationType.COGNITO,
+            providerArns: [props.cognito.userPool.userPoolArn],
+            identitySource: "Authorization",
         });
 
         {
