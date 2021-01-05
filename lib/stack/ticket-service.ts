@@ -19,7 +19,7 @@ export class TicketServiceStack extends cdk.Stack {
             restApiId: api.restApiId,
             type: gw.AuthorizationType.COGNITO,
             providerArns: [props.cognito.userPool.userPoolArn],
-            identitySource: "Authorization",
+            identitySource: "method.request.header.Authorization",
             name: "CognitoAuthorizer",
         });
 
