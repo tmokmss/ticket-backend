@@ -15,13 +15,13 @@ export class TicketServiceStack extends cdk.Stack {
             restApiName: 'Travel Backend',
         });
 
-        // const auth = new gw.CfnAuthorizer(this, 'authorizer', {
-        //     restApiId: api.restApiId,
-        //     type: gw.AuthorizationType.COGNITO,
-        //     providerArns: [props.cognito.userPool.userPoolArn],
-        //     identitySource: "method.request.header.Authorization",
-        //     name: "CognitoAuthorizer",
-        // });
+        const auth = new gw.CfnAuthorizer(this, 'authorizer', {
+            restApiId: api.restApiId,
+            type: gw.AuthorizationType.COGNITO,
+            providerArns: [props.cognito.userPool.userPoolArn],
+            identitySource: "method.request.header.Authorization",
+            name: "CognitoAuthorizer",
+        });
 
         {
             const handler = new lambdanode.NodejsFunction(this, 'handler', {
@@ -45,10 +45,14 @@ export class TicketServiceStack extends cdk.Stack {
                     allowOrigins: gw.Cors.ALL_ORIGINS,
                     allowMethods: gw.Cors.ALL_METHODS,
                 },
+                
             });
 
             tickets.addProxy({
                 defaultIntegration: integration,
+                defaultMethodOptions: {
+                    authorizationType: gw.AuthorizationType.COGNITO,
+                }
             });
         }
     }
