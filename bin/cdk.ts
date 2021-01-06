@@ -11,7 +11,8 @@ const app = new cdk.App();
 new CicdBackendStack(app, prefix + 'CicdBackendStack');
 
 const cognito = new CognitoStack(app, 'CognitoStack');
+const storage = new StorageStack(app, 'StorageStack');
 const ticket = new TicketServiceStack(app, 'TicketServiceStack', {
     cognito,
+    storage,
 });
-new StorageStack(app, 'StorageStack');

@@ -5,6 +5,8 @@ export interface StorageStackProps extends cdk.StackProps {
 }
 
 export class StorageStack extends cdk.Stack {
+    readonly ticketTable: dynamo.Table;
+
     constructor(scope: cdk.Construct, id: string, props?: StorageStackProps) {
         super(scope, id, props);
 
@@ -12,6 +14,8 @@ export class StorageStack extends cdk.Stack {
             partitionKey: { name: 'userId', type: dynamo.AttributeType.STRING },
             sortKey: { name: 'boughtAt', type: dynamo.AttributeType.NUMBER },
             billingMode: dynamo.BillingMode.PAY_PER_REQUEST,
-        })
+        });
+
+        this.ticketTable = ticketTable;
     }
 }

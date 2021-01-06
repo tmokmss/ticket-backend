@@ -8,9 +8,10 @@ export class DevStage extends Stage {
         super(scope, id, props);
 
         const cognito = new CognitoStack(this, 'CognitoStack');
+        const storage = new StorageStack(this, 'StorageStack');
         const ticket = new TicketServiceStack(this, 'TicketServiceStack', {
             cognito,
+            storage,
         });
-        new StorageStack(this, 'StorageStack');
     }
 }

@@ -3,9 +3,11 @@ import * as gw from '@aws-cdk/aws-apigateway';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import { CognitoStack } from './cognito';
 import { CognitoAuthorizer } from '../construct/cognito-authorizer';
+import { StorageStack } from './storage';
 
 export interface TicketServiceStackProps extends cdk.StackProps {
     cognito: CognitoStack,
+    storage: StorageStack,
 }
 
 export class TicketServiceStack extends cdk.Stack {
@@ -36,6 +38,8 @@ export class TicketServiceStack extends cdk.Stack {
                     ],
                 }
             });
+
+            props.storage.ticketTable.grantReadWriteData(handler);
 
             const integration = new gw.LambdaIntegration(handler);
             const tickets = api.root.addResource('tickets', {
