@@ -39,7 +39,6 @@ export class TicketServiceStack extends cdk.Stack {
                 },
                 environment: {
                     "TICKET_TABLE_NAME": props.storage.ticketTable.tableName,
-                    "AWS_REGION": this.region,
                 }
             });
 
