@@ -1,6 +1,6 @@
 import { docClient } from "../util/dynamodb";
 
-const ticketTableName = 'travel-stage-StorageStack-ticketTable4EA4FD6F-C75N5FQ85560';
+const ticketTableName = process.env.TICKET_TABLE_NAME ?? 'travel-stage-StorageStack-ticketTable4EA4FD6F-C75N5FQ85560';
 
 interface TicketProps {
     userId: string,

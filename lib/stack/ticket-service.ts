@@ -36,6 +36,10 @@ export class TicketServiceStack extends cdk.Stack {
                         "aws-serverless-express",
                         "express",
                     ],
+                },
+                environment: {
+                    "TICKET_TABLE_NAME": props.storage.ticketTable.tableName,
+                    "AWS_REGION": this.region,
                 }
             });
 
