@@ -51,18 +51,19 @@ export class TicketServiceStack extends cdk.Stack {
                     allowOrigins: gw.Cors.ALL_ORIGINS,
                     allowMethods: gw.Cors.ALL_METHODS,
                 },
-                
-            });
-
-            tickets.addProxy({
-                defaultIntegration: integration,
                 defaultMethodOptions: {
                     authorizationType: gw.AuthorizationType.COGNITO,
                     authorizer: auth,
                     authorizationScopes: [
                         "api/ticket",
                     ],
-                }
+                },
+            });
+
+            tickets.addMethod('ANY');
+
+            tickets.addProxy({
+                // defaultIntegration: integration,
             });
         }
     }
