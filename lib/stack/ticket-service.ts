@@ -16,6 +16,9 @@ export class TicketServiceStack extends cdk.Stack {
 
         const api = new gw.RestApi(this, 'api', {
             restApiName: 'Travel Backend',
+            deployOptions:{
+                loggingLevel: gw.MethodLoggingLevel.INFO,
+            }
         });
 
         const auth = new CognitoAuthorizer(this, 'authorizer', {
@@ -54,9 +57,6 @@ export class TicketServiceStack extends cdk.Stack {
                 defaultMethodOptions: {
                     authorizationType: gw.AuthorizationType.COGNITO,
                     authorizer: auth,
-                    authorizationScopes: [
-                        "api/ticket",
-                    ],
                 },
             });
 
