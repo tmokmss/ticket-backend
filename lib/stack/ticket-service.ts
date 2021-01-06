@@ -61,6 +61,8 @@ export class TicketServiceStack extends cdk.Stack {
             });
 
             tickets.addMethod('ANY');
+
+            tickets.addProxy();
         }
     }
 }
