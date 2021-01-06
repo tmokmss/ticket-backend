@@ -5,7 +5,7 @@ export async function createTicket(req: Request, res: Response) {
     const travelId = req.body.travelId;
 
     try {
-        const response = await Ticket.create(getUserId(), travelId);
+        const response = await Ticket.create(getUserId(req), travelId);
         res.send(response);
     } catch (e) {
         console.log(e);
@@ -15,7 +15,7 @@ export async function createTicket(req: Request, res: Response) {
 
 export async function getTickets(req: Request, res: Response) {
     try {
-        const response = await Ticket.query(getUserId());
+        const response = await Ticket.query(getUserId(req));
         res.send(response);
     } catch (e) {
         console.log(e);
@@ -23,6 +23,6 @@ export async function getTickets(req: Request, res: Response) {
     }
 }
 
-function getUserId() {
-    return "test";
+function getUserId(req: Request) {
+    return req.body.userId;
 }

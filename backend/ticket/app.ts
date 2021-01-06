@@ -1,6 +1,7 @@
 import express from 'express';
-import * as middleware from 'aws-serverless-express/middleware'
-import * as ticketController from "./controller/ticket_controller"
+import * as middleware from 'aws-serverless-express/middleware';
+import * as ticketController from "./controller/ticket_controller";
+import * as jwt from "jsonwebtoken";
 
 export const app = express();
 
@@ -24,6 +25,14 @@ app.post('/postTest', (req: express.Request, res: express.Response) => {
 
 {
     const router = express.Router();
+
+    router.use((req, res, next) => {
+        const token = req.headers.authorization!;
+        const decoded = jwt.decode(token)!;
+        req.body.userId = decoded.sub;
+        next();
+    })
+
     router.get('/', ticketController.getTickets);
     router.post('/', ticketController.createTicket);
     // router.put('/:ticketId', ticketController.createTicket);
