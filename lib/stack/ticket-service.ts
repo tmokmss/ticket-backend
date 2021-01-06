@@ -59,6 +59,9 @@ export class TicketServiceStack extends cdk.Stack {
                 defaultMethodOptions: {
                     authorizationType: gw.AuthorizationType.COGNITO,
                     authorizer: auth,
+                    authorizationScopes: [
+                        "api/ticket",
+                    ],
                 }
             });
         }

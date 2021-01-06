@@ -24,7 +24,18 @@ export class CognitoStack extends cdk.Stack {
 
         userPool.addClient(`mobileClient`, {
 
-        })
+        });
+
+        userPool.addResourceServer(`resourceServer`, {
+            identifier: 'api',
+            userPoolResourceServerName: 'api',
+            scopes: [
+                new cognito.ResourceServerScope({
+                    scopeName: 'ticket',
+                    scopeDescription: 'access to ticket service',
+                }),
+            ],
+        });
 
         // new cognito.CfnUserPoolGroup(this, 'admin-group', {
         //     userPoolId: userPool.userPoolId,
