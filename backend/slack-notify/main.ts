@@ -41,6 +41,11 @@ async function sendSlackMessage(record: SNSMessage) {
                     },
                 ]
             },
+        ],
+        "attachments": [
+            {
+                "color": json.detail.state == "SUCCEEDED" ? "good" : "danger",
+            }
         ]
     });
 }
