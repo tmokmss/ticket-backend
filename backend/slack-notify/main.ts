@@ -7,44 +7,44 @@ async function sendSlackMessage(record: SNSMessage) {
     console.log(record);
     const json = JSON.parse(record.Message);
     await axios.post(webhookUrl, {
-        "blocks": [
-            {
-                "type": "header",
-                "text": {
-                    "type": "plain_text",
-                    "text": json.detailType,
-                    "emoji": true
-                }
-            },
-            {
-                "type": "section",
-                "fields": [
-                    {
-                        "type": "mrkdwn",
-                        "text": `*Region:*\n${json.region}`
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": `*Pipeline:*\n${json.detail.pipeline}`
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": `*Status:*\n${json.detail.state}`
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": `*ExecutionId:*\n${json.detail["execution-id"]}`
-                    },
-                    {
-                        "type": "mrkdwn",
-                        "text": `*Time:*\n${json.time}`
-                    },
-                ]
-            },
-        ],
         "attachments": [
             {
                 "color": json.detail.state == "SUCCEEDED" ? "good" : "danger",
+                "blocks": [
+                    {
+                        "type": "header",
+                        "text": {
+                            "type": "plain_text",
+                            "text": json.detailType,
+                            "emoji": true
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": `*Region:*\n${json.region}`
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": `*Pipeline:*\n${json.detail.pipeline}`
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": `*Status:*\n${json.detail.state}`
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": `*ExecutionId:*\n${json.detail["execution-id"]}`
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": `*Time:*\n${json.time}`
+                            },
+                        ]
+                    },
+                ],
             }
         ]
     });
