@@ -4,12 +4,12 @@ import axios from "axios";
 const webhookUrl = process.env.SLACK_WEBHOOK_URL!;
 
 async function sendSlackMessage(record: SNSMessage) {
-    console.log(record);
     const json = JSON.parse(record.Message);
-    await axios.post(webhookUrl, {
+
+    const body = {
         "attachments": [
             {
-                "color": json.detail.state == "SUCCEEDED" ? "good" : "danger",
+                "color": json.detail.state == "SUCCEEDED" ? "#36a64f" : "#ff6666",
                 "blocks": [
                     {
                         "type": "header",
@@ -47,7 +47,9 @@ async function sendSlackMessage(record: SNSMessage) {
                 ],
             }
         ]
-    });
+    }
+    console.log(body);
+    await axios.post(webhookUrl, body);
 }
 
 export const lambdaHandler = async (

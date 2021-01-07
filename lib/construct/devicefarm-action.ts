@@ -27,6 +27,7 @@ export enum TestType {
     XCTEST_UI = 'XCTEST_UI',
 }
 
+// refer to https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-DeviceFarm.html
 interface DeviceFarmActionProps extends codepipeline.CommonAwsActionProps {
     input: codepipeline.Artifact,
     appType: AppType,
