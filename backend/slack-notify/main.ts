@@ -10,6 +10,11 @@ export const lambdaHandler = async (
     console.log(event);
     const message = event.Message;
     await axios.post(webhookUrl, {
-        "text": message,
+        data: {
+            text: message,
+        },
+        headers: {
+            "Content-type": "application/json",
+        },
     });
 }

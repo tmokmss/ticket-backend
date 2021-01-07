@@ -43,7 +43,7 @@ export class CicdBackendStack extends Stack {
             pipeline: pipeline.codePipeline,
         });
 
-        const handler = new lambdanode.NodejsFunction(this, 'handler', {
+        const slackNotifier = new lambdanode.NodejsFunction(this, 'slack-notifier', {
             entry: 'backend/slack-notify/main.ts',
             handler: 'lambdaHandler',
             depsLockFilePath: 'backend/slack-notify/package-lock.json',
@@ -58,6 +58,6 @@ export class CicdBackendStack extends Stack {
             }
         });
 
-        topic.addSubscription(new sub.LambdaSubscription(handler));
+        topic.addSubscription(new sub.LambdaSubscription(slackNotifier));
     }
 }
