@@ -22,27 +22,7 @@ export class CognitoStack extends cdk.Stack {
             },
         });
 
-        const ticketScope = new cognito.ResourceServerScope({
-            scopeName: 'ticket',
-            scopeDescription: 'access to ticket service',
-        });
-
-        const resourceServer = userPool.addResourceServer(`resourceServer`, {
-            identifier: 'api',
-            userPoolResourceServerName: 'api',
-            scopes: [
-                ticketScope,
-            ],
-        });
-
         userPool.addClient(`mobileClient`, {
-            oAuth: {
-                scopes: [
-                    cognito.OAuthScope.EMAIL,
-                    cognito.OAuthScope.OPENID,
-                    cognito.OAuthScope.resourceServer(resourceServer, ticketScope),
-                ]
-            }
         });
 
         // new cognito.CfnUserPoolGroup(this, 'admin-group', {
