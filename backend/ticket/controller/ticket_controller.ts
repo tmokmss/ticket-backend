@@ -23,6 +23,6 @@ export async function getTickets(req: Request, res: Response) {
     }
 }
 
-function getUserId(req: Request) {
+function getUserId(req: Request): string {
     return req.body.userId;
 }
