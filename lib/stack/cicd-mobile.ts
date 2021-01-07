@@ -58,6 +58,7 @@ export class CicdMobileStack extends Stack {
                             // Get devicePoolArn by executing: aws devicefarm list-device-pools --arn arn:aws:devicefarm:us-west-2:198634196645:project:87aa9613-de9f-47fe-b8df-a359659ced05 --region us-west-2
                             devicePoolArn: "arn:aws:devicefarm:us-west-2:198634196645:devicepool:87aa9613-de9f-47fe-b8df-a359659ced05/ea3114d0-fbdd-458a-b5e0-15a875b38e32",
                             app: "app-release.apk",
+                            test: "test-spec.yml",
                         }),
                     ],
                 },

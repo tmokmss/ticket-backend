@@ -44,6 +44,10 @@ interface DeviceFarmActionProps extends codepipeline.CommonAwsActionProps {
     appiumVersion?: string,
 
     testType: TestType,
+
+    // The name and path of the test definition file in your source location. 
+    // The path is relative to the root of the input artifact for your test.
+    test?: string,
 }
 
 export class DeviceFarmAction extends codepipeline_actions.Action {
@@ -88,6 +92,7 @@ export class DeviceFarmAction extends codepipeline_actions.Action {
                 App: this.props.app,
                 DevicePoolArn: this.props.devicePoolArn,
                 TestType: this.props.testType,
+                Test: this.props.test,
             },
         };
     }
