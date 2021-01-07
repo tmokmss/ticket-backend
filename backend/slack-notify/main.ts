@@ -6,12 +6,7 @@ const webhookUrl = process.env.SLACK_WEBHOOK_URL!;
 async function sendSlackMessage(record: SNSMessage) {
     console.log(record);
     await axios.post(webhookUrl, {
-        data: {
-            text: record.Message,
-        },
-        headers: {
-            "Content-type": "application/json",
-        },
+        text: record.Message,
     });
 }
 
