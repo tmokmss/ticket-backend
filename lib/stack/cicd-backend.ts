@@ -1,5 +1,8 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as sns from '@aws-cdk/aws-sns';
+import * as sub from '@aws-cdk/aws-sns-subscriptions';
+import * as lambda from '@aws-cdk/aws-lambda';
+import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
@@ -31,15 +34,30 @@ export class CicdBackendStack extends Stack {
                 buildCommand: 'npm run build',
             }),
         });
-        
+
         pipeline.addApplicationStage(new DevStage(this, `dev-stage`));
-        // const testStage = pipeline.addStage('Test');
-        // testStage.addActions()
-        
+
         const topic = new sns.Topic(this, `topic`);
         new CodePipelineNotification(this, `notification`, {
             topic: topic,
             pipeline: pipeline.codePipeline,
         });
+
+        const handler = new lambdanode.NodejsFunction(this, 'handler', {
+            entry: 'backend/slack-notify/main.ts',
+            handler: 'lambdaHandler',
+            depsLockFilePath: 'backend/slack-notify/package-lock.json',
+            bundling: {
+                minify: false,
+                nodeModules: [
+                    "axios",
+                ],
+            },
+            environment: {
+                "SLACK_WEBHOOK_URL": SecretValue.secretsManager('slack-webhook-url').toString(),
+            }
+        });
+
+        topic.addSubscription(new sub.LambdaSubscription(handler));
     }
 }
