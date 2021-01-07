@@ -36,11 +36,11 @@ async function sendSlackMessage(record: SNSMessage) {
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": `*ExecutionId:*\n${json.detail["execution-id"]}`
+                                "text": `*Time:*\n${json.time}`
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": `*Time:*\n${json.time}`
+                                "text": `*ExecutionId:*\n${json.detail["execution-id"]}`
                             },
                         ]
                     },
