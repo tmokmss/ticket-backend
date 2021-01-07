@@ -38,6 +38,7 @@ export class TicketServiceStack extends cdk.Stack {
                     nodeModules: [
                         "aws-serverless-express",
                         "express",
+                        "jsonwebtoken",
                     ],
                 },
                 environment: {
