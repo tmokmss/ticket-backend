@@ -5,6 +5,7 @@ const webhookUrl = process.env.SLACK_WEBHOOK_URL!;
 
 async function sendSlackMessage(record: SNSMessage) {
     const json = JSON.parse(record.Message);
+    const url = `https://${json.region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${json.detail.pipeline}/executions/${json.detail["execution-id"]}/timeline`;
 
     const body = {
         "attachments": [
@@ -40,7 +41,7 @@ async function sendSlackMessage(record: SNSMessage) {
                             },
                             {
                                 "type": "mrkdwn",
-                                "text": `*ExecutionId:*\n${json.detail["execution-id"]}`
+                                "text": `*ExecutionId:*\n<${url}|${json.detail["execution-id"]}>`
                             },
                         ]
                     },
