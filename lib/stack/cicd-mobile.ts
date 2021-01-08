@@ -1,7 +1,9 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as sns from '@aws-cdk/aws-sns';
+import * as sub from '@aws-cdk/aws-sns-subscriptions';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { App, Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CodePipelineNotification } from '../construct/codepipeline-notification';
@@ -53,12 +55,12 @@ export class CicdMobileStack extends Stack {
                             actionName: 'Test',
                             input: buildArtifact,
                             appType: AppType.ANDROID,
-                            testType: TestType.BUILTIN_FUZZ,
+                            testType: TestType.BUILTIN_EXPLORER,
                             projectId: "87aa9613-de9f-47fe-b8df-a359659ced05",
                             // Get devicePoolArn by executing: aws devicefarm list-device-pools --arn arn:aws:devicefarm:us-west-2:198634196645:project:87aa9613-de9f-47fe-b8df-a359659ced05 --region us-west-2
                             devicePoolArn: "arn:aws:devicefarm:us-west-2:198634196645:devicepool:87aa9613-de9f-47fe-b8df-a359659ced05/ea3114d0-fbdd-458a-b5e0-15a875b38e32",
-                            app: "app-release.apk",
-                            test: "test-spec.yml",
+                            app: "build/app/outputs/apk/debug/app-debug.apk",
+                            test: "test_spec.yml",
                         }),
                     ],
                 },
@@ -81,5 +83,22 @@ export class CicdMobileStack extends Stack {
             topic: topic,
             pipeline: pipeline,
         });
+
+        const slackNotifier = new lambdanode.NodejsFunction(this, 'slack-notifier', {
+            entry: 'backend/slack-notify/main.ts',
+            handler: 'lambdaHandler',
+            depsLockFilePath: 'backend/slack-notify/package-lock.json',
+            bundling: {
+                minify: false,
+                nodeModules: [
+                    "axios",
+                ],
+            },
+            environment: {
+                "SLACK_WEBHOOK_URL": SecretValue.secretsManager('slack-webhook-url').toString(),
+            }
+        });
+
+        topic.addSubscription(new sub.LambdaSubscription(slackNotifier));
     }
 }

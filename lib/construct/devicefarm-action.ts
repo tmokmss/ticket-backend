@@ -48,6 +48,8 @@ interface DeviceFarmActionProps extends codepipeline.CommonAwsActionProps {
     // The name and path of the test definition file in your source location. 
     // The path is relative to the root of the input artifact for your test.
     test?: string,
+
+    additionalData?: string,
 }
 
 export class DeviceFarmAction extends codepipeline_actions.Action {
@@ -74,7 +76,12 @@ export class DeviceFarmAction extends codepipeline_actions.Action {
         options.role.addToPrincipalPolicy(
             new iam.PolicyStatement({
                 actions: [
-                    "devicefarm:*",
+                    "devicefarm:ListProjects",
+                    "devicefarm:ListDevicePools",
+                    "devicefarm:GetRun",
+                    "devicefarm:GetUpload",
+                    "devicefarm:CreateUpload",
+                    "devicefarm:ScheduleRun",
                 ],
                 effect: iam.Effect.ALLOW,
                 resources: ['*'],
@@ -93,6 +100,7 @@ export class DeviceFarmAction extends codepipeline_actions.Action {
                 DevicePoolArn: this.props.devicePoolArn,
                 TestType: this.props.testType,
                 Test: this.props.test,
+                AdditionalData: this.props.additionalData,
             },
         };
     }
