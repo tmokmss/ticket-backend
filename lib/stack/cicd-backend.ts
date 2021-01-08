@@ -1,7 +1,6 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as sns from '@aws-cdk/aws-sns';
 import * as sub from '@aws-cdk/aws-sns-subscriptions';
-import * as lambda from '@aws-cdk/aws-lambda';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
