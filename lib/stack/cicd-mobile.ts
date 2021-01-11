@@ -27,6 +27,7 @@ export class CicdMobileStack extends Stack {
                     "DEVICEPOOL_ARN": { value: "arn:aws:devicefarm:us-west-2:198634196645:devicepool:87aa9613-de9f-47fe-b8df-a359659ced05/ea3114d0-fbdd-458a-b5e0-15a875b38e32" },
                 },
             },
+            buildSpec: codebuild.BuildSpec.fromSourceFilename("buildspec_e2e.yml"),
         });
 
         devicefarmProject.role?.addToPrincipalPolicy(
@@ -36,6 +37,7 @@ export class CicdMobileStack extends Stack {
                     "devicefarm:ListDevicePools",
                     "devicefarm:ListJobs",
                     "devicefarm:ListProjects",
+                    "devicefarm:ListRuns",
                     "devicefarm:ListSuites",
                     "devicefarm:GetRun",
                     "devicefarm:GetUpload",
@@ -70,6 +72,18 @@ export class CicdMobileStack extends Stack {
                             actionName: 'Build',
                             input: sourceArtifact,
                             project: devicefarmProject,
+                            // outputs: [buildArtifact],
+                        }),
+
+                        new codepipeline_actions.CodeBuildAction({
+                            actionName: 'Build_Release',
+                            input: sourceArtifact,
+                            project: new codebuild.PipelineProject(this, 'apk-build-relase-project', {
+                                environment: {
+                                    buildImage: codebuild.LinuxBuildImage.STANDARD_4_0,
+                                    computeType: codebuild.ComputeType.SMALL,
+                                },
+                            }),
                             outputs: [buildArtifact],
                         }),
                     ],
