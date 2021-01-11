@@ -3,6 +3,7 @@ import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as sns from '@aws-cdk/aws-sns';
 import * as sub from '@aws-cdk/aws-sns-subscriptions';
 import * as s3 from '@aws-cdk/aws-s3';
+import * as iam from '@aws-cdk/aws-iam';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { App, Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
@@ -15,6 +16,33 @@ export class CicdMobileStack extends Stack {
 
         const sourceArtifact = new codepipeline.Artifact();
         const buildArtifact = new codepipeline.Artifact();
+
+        const devicefarmProject = new codebuild.PipelineProject(this, 'apk-project', {
+            environment: {
+                buildImage: codebuild.LinuxBuildImage.STANDARD_4_0,
+                computeType: codebuild.ComputeType.SMALL,
+                environmentVariables: {
+                    // Get devicePoolArn by executing: aws devicefarm list-device-pools --arn arn:aws:devicefarm:us-west-2:198634196645:project:87aa9613-de9f-47fe-b8df-a359659ced05 --region us-west-2
+                    "PROJECT_ARN": { value: "arn:aws:devicefarm:us-west-2:198634196645:project:87aa9613-de9f-47fe-b8df-a359659ced05" },
+                    "DEVICEPOOL_ARN": { value: "arn:aws:devicefarm:us-west-2:198634196645:devicepool:87aa9613-de9f-47fe-b8df-a359659ced05/ea3114d0-fbdd-458a-b5e0-15a875b38e32" },
+                },
+            },
+        });
+
+        devicefarmProject.role?.addToPrincipalPolicy(
+            new iam.PolicyStatement({
+                actions: [
+                    "devicefarm:ListProjects",
+                    "devicefarm:ListDevicePools",
+                    "devicefarm:GetRun",
+                    "devicefarm:GetUpload",
+                    "devicefarm:CreateUpload",
+                    "devicefarm:ScheduleRun",
+                ],
+                effect: iam.Effect.ALLOW,
+                resources: ['*'],
+            })
+        );
 
         const pipeline = new codepipeline.Pipeline(this, 'Pipeline', {
             pipelineName: "travel-app",
@@ -38,29 +66,8 @@ export class CicdMobileStack extends Stack {
                         new codepipeline_actions.CodeBuildAction({
                             actionName: 'Build',
                             input: sourceArtifact,
-                            project: new codebuild.PipelineProject(this, 'apk-project', {
-                                environment: {
-                                    buildImage: codebuild.LinuxBuildImage.STANDARD_4_0,
-                                    computeType: codebuild.ComputeType.SMALL,
-                                },
-                            }),
+                            project: devicefarmProject,
                             outputs: [buildArtifact],
-                        }),
-                    ],
-                },
-                {
-                    stageName: 'Test-apk',
-                    actions: [
-                        new DeviceFarmAction({
-                            actionName: 'Test',
-                            input: buildArtifact,
-                            appType: AppType.ANDROID,
-                            testType: TestType.APPIUM_PYTHON,
-                            projectId: "87aa9613-de9f-47fe-b8df-a359659ced05",
-                            // Get devicePoolArn by executing: aws devicefarm list-device-pools --arn arn:aws:devicefarm:us-west-2:198634196645:project:87aa9613-de9f-47fe-b8df-a359659ced05 --region us-west-2
-                            devicePoolArn: "arn:aws:devicefarm:us-west-2:198634196645:devicepool:87aa9613-de9f-47fe-b8df-a359659ced05/ea3114d0-fbdd-458a-b5e0-15a875b38e32",
-                            app: "build/app/outputs/apk/debug/app-debug.apk",
-                            test: "build/bundle.zip",
                         }),
                     ],
                 },
@@ -71,7 +78,7 @@ export class CicdMobileStack extends Stack {
                             actionName: "Deploy",
                             input: buildArtifact,
                             bucket: new s3.Bucket(this, 'buildBucket'),
-                            
+
                         }),
                     ],
                 }
