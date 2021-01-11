@@ -32,8 +32,11 @@ export class CicdMobileStack extends Stack {
         devicefarmProject.role?.addToPrincipalPolicy(
             new iam.PolicyStatement({
                 actions: [
-                    "devicefarm:ListProjects",
+                    "devicefarm:ListArtifacts",
                     "devicefarm:ListDevicePools",
+                    "devicefarm:ListJobs",
+                    "devicefarm:ListProjects",
+                    "devicefarm:ListSuites",
                     "devicefarm:GetRun",
                     "devicefarm:GetUpload",
                     "devicefarm:CreateUpload",
