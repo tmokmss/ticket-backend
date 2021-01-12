@@ -25,6 +25,12 @@ export class CognitoStack extends cdk.Stack {
         userPool.addClient(`mobileClient`, {
         });
 
+        userPool.addDomain(`domain`, {
+            cognitoDomain: {
+                domainPrefix: `ticket-${userPool.node.addr}`
+            }
+        });
+
         // new cognito.CfnUserPoolGroup(this, 'admin-group', {
         //     userPoolId: userPool.userPoolId,
         //     groupName: 'admin',
