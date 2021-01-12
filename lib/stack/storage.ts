@@ -14,6 +14,7 @@ export class StorageStack extends cdk.Stack {
             partitionKey: { name: 'userId', type: dynamo.AttributeType.STRING },
             sortKey: { name: 'travelId', type: dynamo.AttributeType.STRING },
             billingMode: dynamo.BillingMode.PAY_PER_REQUEST,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
         this.ticketTable = ticketTable;
