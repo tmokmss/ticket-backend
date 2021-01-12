@@ -12,7 +12,7 @@ export class StorageStack extends cdk.Stack {
 
         const ticketTable = new dynamo.Table(this, 'ticketTable', {
             partitionKey: { name: 'userId', type: dynamo.AttributeType.STRING },
-            sortKey: { name: 'travelId', type: dynamo.AttributeType.STRING },
+            sortKey: { name: 'boughtAt', type: dynamo.AttributeType.NUMBER },
             billingMode: dynamo.BillingMode.PAY_PER_REQUEST,
         });
 
