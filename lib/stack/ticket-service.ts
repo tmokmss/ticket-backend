@@ -42,7 +42,7 @@ export class TicketServiceStack extends cdk.Stack {
                     ],
                 },
                 environment: {
-                    "TICKET_TABLE_NAME": props.storage.ticketTable.tableName,
+                    "TICKET_TABLE_NAME": 'aa'//props.storage.ticketTable.tableName,
                 }
             });
 
