@@ -4,15 +4,17 @@ const ticketTableName = process.env.TICKET_TABLE_NAME ?? 'travel-stage-StorageSt
 
 interface TicketProps {
     userId: string,
-    boughtAt: number,
-    travelId: number,
+    travelId: string,
+    boughtAt?: number,
 }
 
 export class Ticket {
     readonly userId: string;
+    readonly travelId: string;
 
     constructor(props: TicketProps) {
         this.userId = props.userId;
+        this.travelId = props.travelId;
     }
 
     static async create(userId: string, travelId: number) {
@@ -34,6 +36,18 @@ export class Ticket {
             KeyConditionExpression: "userId = :userId",
             ExpressionAttributeValues: {
                 ":userId": userId,
+            },
+        }).promise();
+
+        return response;
+    }
+
+    async cancel() {
+        const response = await docClient.delete({
+            TableName: ticketTableName,
+            Key: {
+                "userId": this.userId,
+                "travelId": this.travelId,
             },
         }).promise();
 

@@ -36,7 +36,7 @@ app.post('/postTest', (req: express.Request, res: express.Response) => {
     router.get('/', ticketController.getTickets);
     router.post('/', ticketController.createTicket);
     // router.put('/:ticketId', ticketController.createTicket);
-    router.delete('/:ticketId', ticketController.createTicket);
+    router.post('/cancel', ticketController.cancelTicket);
 
     app.use('/tickets', router);
 }
