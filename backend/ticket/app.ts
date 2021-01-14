@@ -15,14 +15,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(middleware.eventContext());
 
-app.get('/getTest', (req: express.Request, res: express.Response) => {
-    res.send(req.query)
-});
-
-app.post('/postTest', (req: express.Request, res: express.Response) => {
-    res.send(req.body)
-});
-
 {
     const router = express.Router();
 
