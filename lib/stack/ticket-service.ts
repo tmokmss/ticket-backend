@@ -28,7 +28,7 @@ export class TicketServiceStack extends cdk.Stack {
         });
 
         {
-            const handler = new lambdanode.NodejsFunction(this, 'handler', {
+            const handler = new lambdanode.NodejsFunction(this, 'ticketHandler', {
                 entry: 'backend/ticket/main.ts',
                 handler: 'lambdaHandler',
                 depsLockFilePath: 'backend/ticket/package-lock.json',
@@ -50,6 +50,42 @@ export class TicketServiceStack extends cdk.Stack {
 
             const integration = new gw.LambdaIntegration(handler);
             const tickets = api.root.addResource('tickets', {
+                defaultIntegration: integration,
+                defaultCorsPreflightOptions: {
+                    allowOrigins: gw.Cors.ALL_ORIGINS,
+                    allowMethods: gw.Cors.ALL_METHODS,
+                },
+                defaultMethodOptions: {
+                    authorizationType: gw.AuthorizationType.COGNITO,
+                    authorizer: auth,
+                },
+            });
+
+            tickets.addMethod('ANY');
+
+            tickets.addProxy();
+        }
+
+        {
+            const handler = new lambdanode.NodejsFunction(this, 'travelHandler', {
+                entry: 'backend/travel/main.ts',
+                handler: 'lambdaHandler',
+                depsLockFilePath: 'backend/travel/package-lock.json',
+                bundling: {
+                    minify: false,
+                    tsconfig: 'backend/travel/tsconfig.json',
+                    nodeModules: [
+                        "aws-serverless-express",
+                        "express",
+                        "jsonwebtoken",
+                    ],
+                },
+                environment: {
+                }
+            });
+
+            const integration = new gw.LambdaIntegration(handler);
+            const tickets = api.root.addResource('travels', {
                 defaultIntegration: integration,
                 defaultCorsPreflightOptions: {
                     allowOrigins: gw.Cors.ALL_ORIGINS,
