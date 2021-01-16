@@ -1,5 +1,4 @@
 import express from 'express';
-import * as middleware from 'aws-serverless-express/middleware';
 import * as ticketController from "./controller/ticket_controller";
 import * as jwt from "jsonwebtoken";
 
@@ -13,7 +12,6 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(middleware.eventContext());
 
 {
     const router = express.Router();
@@ -27,7 +25,6 @@ app.use(middleware.eventContext());
 
     router.get('/', ticketController.getTickets);
     router.post('/', ticketController.createTicket);
-    // router.put('/:ticketId', ticketController.createTicket);
     router.post('/cancel', ticketController.cancelTicket);
 
     app.use('/tickets', router);
