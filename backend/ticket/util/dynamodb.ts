@@ -4,5 +4,10 @@ aws.config.update({
     region: process.env.AWS_REGION ?? 'ap-northeast-1',
 });
 
-export const ddb = aws.DynamoDB;
-export const docClient = new ddb.DocumentClient();
+if (process.env.DYNAMODB_ENDPOINT != null) {
+    console.log(`use DynamoDB Endpoint: ${process.env.DYNAMODB_ENDPOINT}`);
+    aws.config.dynamodb = { endpoint: process.env.DYNAMODB_ENDPOINT };
+}
+
+export const ddb = new aws.DynamoDB();
+export const docClient = new aws.DynamoDB.DocumentClient();

@@ -3,7 +3,6 @@ import { Ticket } from "../model/ticket";
 
 export async function createTicket(req: Request, res: Response) {
     const travelId = req.body.travelId;
-
     try {
         const response = await Ticket.create(getUserId(req), travelId);
         res.send(response);

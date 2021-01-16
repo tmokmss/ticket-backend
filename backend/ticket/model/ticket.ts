@@ -1,8 +1,8 @@
 import { docClient } from "../util/dynamodb";
 
-const ticketTableName = process.env.TICKET_TABLE_NAME ?? 'travel-stage-StorageStack-ticketTable4EA4FD6F-C75N5FQ85560';
+const ticketTableName = process.env.TICKET_TABLE_NAME ?? 'dev-stage-StorageStack-ticketTable4EA4FD6F-XFIGX5JCMSQN';
 
-interface TicketProps {
+export interface TicketProps {
     userId: string,
     travelId: string,
     boughtAt?: number,
@@ -11,10 +11,12 @@ interface TicketProps {
 export class Ticket {
     readonly userId: string;
     readonly travelId: string;
+    readonly boughtAt: Date;
 
     constructor(props: TicketProps) {
         this.userId = props.userId;
         this.travelId = props.travelId;
+        this.boughtAt = new Date(props.boughtAt ?? 0);
     }
 
     static async create(userId: string, travelId: number) {
@@ -39,7 +41,11 @@ export class Ticket {
             },
         }).promise();
 
-        return response;
+        return response['Items']!.map(item => new Ticket({
+            userId: item.userId,
+            travelId: item.travelId,
+            boughtAt: item.boughtAt,
+        }));
     }
 
     async cancel() {
