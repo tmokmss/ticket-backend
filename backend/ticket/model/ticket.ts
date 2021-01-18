@@ -59,4 +59,12 @@ export class Ticket {
 
         return response;
     }
+
+    toJSON() {
+        return {
+            userId: this.userId,
+            travelId: this.travelId,
+            boughtAt: this.boughtAt.getTime(),
+        }
+    }
 }

@@ -32,13 +32,15 @@ test('get', async () => {
         .set({ Authorization: createIdToken(userId) });
 
     expect(response.status).toBe(200);
-    expect(response.body.find((t: TicketProps) => t.userId == userId && t.travelId == travelId)).toBeTruthy();
+
+    const ticket = response.body.find((t: TicketProps) => t.userId == userId && t.travelId == travelId);
+    expect(ticket).toBeDefined();
+    expect(ticket.boughtAt).not.toBeNaN();
 });
 
 test('cancel', async () => {
     const tickets = await Ticket.query(userId);
     expect(tickets.find(t => t.userId == userId && t.travelId == travelId)).toBeTruthy();
-
 
     const response = await request.agent(app)
         .post("/tickets/cancel")
@@ -47,5 +49,5 @@ test('cancel', async () => {
 
     expect(response.status).toBe(200);
     const ticketsAfter = await Ticket.query(userId);
-    expect(ticketsAfter.find(t => t.userId == userId && t.travelId == travelId)).toBeFalsy();
+    expect(ticketsAfter.find(t => t.userId == userId && t.travelId == travelId)).toBeUndefined();
 });
