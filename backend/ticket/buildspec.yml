@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+      NodeJs: 12
+    commands:
+      - pwd
+      - curl https://s3.ap-northeast-1.amazonaws.com/dynamodb-local-tokyo/dynamodb_local_latest.zip -o ~/ddb.zip
+      - mkdir ~/ddb
+      - unzip ~/ddb.zip -d ~/ddb
+  pre_build:
+    commands:
+      - echo Pre Build started on `date`
+      - cd ~/ddb
+      - java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+  build:
+    commands:
+      - echo Build started on `date`
+      - cd backend/ticket
+      - npm run build
+      - npm run test
+  post_build:
+    commands:
+      - echo Build finished on `date`
