@@ -2,6 +2,7 @@ import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as sns from '@aws-cdk/aws-sns';
 import * as sub from '@aws-cdk/aws-sns-subscriptions';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
+import * as codebuild from '@aws-cdk/aws-codebuild';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
@@ -33,6 +34,23 @@ export class CicdBackendStack extends Stack {
                 buildCommand: 'npm run build',
             }),
         });
+
+
+        const testStage = pipeline.addStage('Test');
+        testStage.addActions(
+            new codepipeline_actions.CodeBuildAction({
+                actionName: 'Test ticket service',
+                input: sourceArtifact,
+                project: new codebuild.PipelineProject(this, 'ticket-service-test-project', {
+                    environment: {
+                        buildImage: codebuild.LinuxBuildImage.STANDARD_4_0,
+                        computeType: codebuild.ComputeType.SMALL,
+                        privileged: true,
+                    },
+                    buildSpec: codebuild.BuildSpec.fromSourceFilename('backend/ticket/buildspec.yml'),
+                }),
+            }),
+        );
 
         pipeline.addApplicationStage(new DevStage(this, `dev-stage`));
 
