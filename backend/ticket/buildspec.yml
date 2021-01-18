@@ -3,7 +3,7 @@ phases:
   install:
     runtime-versions:
       java: corretto8
-      NodeJs: 12
+      nodejs: 12
     commands:
       - pwd
       - curl https://s3.ap-northeast-1.amazonaws.com/dynamodb-local-tokyo/dynamodb_local_latest.zip -o ~/ddb.zip
