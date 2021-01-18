@@ -11,11 +11,12 @@ phases:
   pre_build:
     commands:
       - echo Pre Build started on `date`
+      - cd backend/ticket
+      - npm ci
+      - npm run build
   build:
     commands:
       - echo Build started on `date`
-      - cd backend/ticket
-      - npm run build
       - npm run test
   post_build:
     commands:
