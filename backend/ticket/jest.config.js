@@ -11,5 +11,8 @@ module.exports = {
       outputDirectory: "reports",
       outputName: "jest.xml",
     }]
-  ]
+  ],
+  collectCoverage: true,
+  coverageDirectory: "reports",
+  coverageReporter: ["clover"],
 };

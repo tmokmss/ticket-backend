@@ -24,5 +24,9 @@ phases:
 reports:
   jest_reports:
     files:
-      - "backend/ticket/reports/*.xml"
+      - "backend/ticket/reports/jest.xml"
     file-format: JUNITXML
+  clover_reports:
+    files:
+      - "backend/ticket/reports/clover.xml"
+    file-format: CLOVERXML
