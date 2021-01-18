@@ -21,3 +21,9 @@ phases:
   post_build:
     commands:
       - echo Build finished on `date`
+reports:
+  jest_reports:
+    files:
+      - jest.yml
+    file-format: JUNITXML
+    base-directory: reports

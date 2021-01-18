@@ -5,4 +5,11 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest'
   },
   setupFiles: ["dotenv/config"],
+  reporters: [
+    'default',
+    ['jest-junit', {
+      outputDirectory: "reports",
+      outputName: "jest.yml",
+    }]
+  ]
 };
