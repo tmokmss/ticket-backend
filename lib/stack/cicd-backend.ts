@@ -39,7 +39,7 @@ export class CicdBackendStack extends Stack {
         const testStage = pipeline.addStage('Test');
         testStage.addActions(
             new codepipeline_actions.CodeBuildAction({
-                actionName: 'Test ticket service',
+                actionName: 'Test-TicketService',
                 input: sourceArtifact,
                 project: new codebuild.PipelineProject(this, 'ticket-service-test-project', {
                     environment: {
