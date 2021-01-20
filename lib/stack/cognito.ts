@@ -23,12 +23,13 @@ export class CognitoStack extends cdk.Stack {
         });
 
         userPool.addClient(`mobileClient`, {
+            idTokenValidity: cdk.Duration.days(1),
         });
 
         userPool.addDomain(`domain`, {
             cognitoDomain: {
                 domainPrefix: `ticket-${userPool.node.addr}`
-            }
+            },
         });
 
         // new cognito.CfnUserPoolGroup(this, 'admin-group', {
