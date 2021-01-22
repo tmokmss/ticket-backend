@@ -15,5 +15,6 @@ export async function getTravels(req: Request, res: Response) {
         new Travel({departure: '成田', destination: '仙台'}),
     ];
 
+    res.type('json');
     res.send(JSON.stringify(travels));
 }
