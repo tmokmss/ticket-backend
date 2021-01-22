@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as gw from '@aws-cdk/aws-apigateway';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
+import * as lambda from '@aws-cdk/aws-lambda';
 import { CognitoStack } from './cognito';
 import { CognitoAuthorizer } from '../construct/cognito-authorizer';
 import { StorageStack } from './storage';
@@ -83,6 +84,20 @@ export class TicketServiceStack extends cdk.Stack {
                 environment: {
                 }
             });
+
+            new lambda.Alias(this, 'alias', {
+                aliasName: 'prod',
+                version: handler.currentVersion,
+                additionalVersions: [
+                    {
+                        version: lambda.Version.fromVersionAttributes(this, `old-version`, {
+                            lambda: handler,
+                            version: handler.currentVersion.version,
+                        }),
+                        weight: 0.1,
+                    }
+                ]
+            })
 
             const integration = new gw.LambdaIntegration(handler);
             const tickets = api.root.addResource('travels', {
