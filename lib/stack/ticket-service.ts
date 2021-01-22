@@ -88,15 +88,15 @@ export class TicketServiceStack extends cdk.Stack {
             new lambda.Alias(this, 'alias', {
                 aliasName: 'prod',
                 version: handler.currentVersion,
-                additionalVersions: [
-                    {
-                        version: lambda.Version.fromVersionAttributes(this, `old-version`, {
-                            lambda: handler,
-                            version: handler.currentVersion.version,
-                        }),
-                        weight: 0.1,
-                    }
-                ]
+                // additionalVersions: [
+                //     {
+                //         version: lambda.Version.fromVersionAttributes(this, `old-version`, {
+                //             lambda: handler,
+                //             version: handler.currentVersion.version,
+                //         }),
+                //         weight: 0.1,
+                //     }
+                // ]
             })
 
             const integration = new gw.LambdaIntegration(handler);
