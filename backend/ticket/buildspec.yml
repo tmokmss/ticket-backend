@@ -6,7 +6,7 @@ phases:
       nodejs: 12
     commands:
       - pwd
-      - docker run -d -p 8000:8000 public.ecr.aws/amazon/dynamodb-local 
+      - docker run -d -p 8000:8000 public.ecr.aws/mobileup/dynamodb-local 
       - sleep 5
   pre_build:
     commands:
