@@ -2,6 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as gw from '@aws-cdk/aws-apigateway';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as cd from '@aws-cdk/aws-codedeploy';
 import { CognitoStack } from './cognito';
 import { CognitoAuthorizer } from '../construct/cognito-authorizer';
 import { StorageStack } from './storage';
@@ -17,7 +18,7 @@ export class TicketServiceStack extends cdk.Stack {
 
         const api = new gw.RestApi(this, 'api', {
             restApiName: 'Travel Backend',
-            deployOptions:{
+            deployOptions: {
                 loggingLevel: gw.MethodLoggingLevel.INFO,
             }
         });
@@ -82,22 +83,19 @@ export class TicketServiceStack extends cdk.Stack {
                     ],
                 },
                 environment: {
-                }
+                },
+                description: `Function generated on: ${new Date().toISOString()}`,
             });
 
-            new lambda.Alias(this, 'alias', {
+            const alias = new lambda.Alias(this, 'alias', {
                 aliasName: 'prod',
                 version: handler.currentVersion,
-                // additionalVersions: [
-                //     {
-                //         version: lambda.Version.fromVersionAttributes(this, `old-version`, {
-                //             lambda: handler,
-                //             version: handler.currentVersion.version,
-                //         }),
-                //         weight: 0.1,
-                //     }
-                // ]
-            })
+            });
+
+            new cd.LambdaDeploymentGroup(this, `deployment-group`, {
+                alias,
+                deploymentConfig: cd.LambdaDeploymentConfig.LINEAR_10PERCENT_EVERY_1MINUTE,
+            });
 
             const integration = new gw.LambdaIntegration(handler);
             const tickets = api.root.addResource('travels', {
