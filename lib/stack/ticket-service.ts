@@ -88,7 +88,7 @@ export class TicketServiceStack extends cdk.Stack {
             });
 
             const alias = new lambda.Alias(this, 'alias', {
-                aliasName: 'prod',
+                aliasName: 'prod-canary',
                 version: handler.currentVersion,
             });
 
