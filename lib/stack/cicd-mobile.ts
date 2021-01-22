@@ -6,9 +6,8 @@ import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam';
 import * as lambdanode from '@aws-cdk/aws-lambda-nodejs';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import { App, Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
+import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CodePipelineNotification } from '../construct/codepipeline-notification';
-import { DeviceFarmAction, AppType, TestType } from '../construct/devicefarm-action';
 
 export class CicdMobileStack extends Stack {
     constructor(scope: Construct, id: string, props?: StackProps) {
