@@ -97,7 +97,7 @@ export class TicketServiceStack extends cdk.Stack {
                 deploymentConfig: cd.LambdaDeploymentConfig.LINEAR_10PERCENT_EVERY_1MINUTE,
             });
 
-            const integration = new gw.LambdaIntegration(alias);
+            const integration = new gw.LambdaIntegration(handler);
             const tickets = api.root.addResource('travels', {
                 defaultIntegration: integration,
                 defaultCorsPreflightOptions: {
