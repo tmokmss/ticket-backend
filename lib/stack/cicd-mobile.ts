@@ -68,7 +68,7 @@ export class CicdMobileStack extends Stack {
                     stageName: 'Build-apk',
                     actions: [
                         new codepipeline_actions.CodeBuildAction({
-                            actionName: 'Build',
+                            actionName: 'E2E_Test',
                             input: sourceArtifact,
                             project: devicefarmProject,
                             // outputs: [buildArtifact],
