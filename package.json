@@ -39,7 +39,6 @@
     "@aws-cdk/aws-sqs": "^1.105.0",
     "@aws-cdk/core": "^1.105.0",
     "@aws-cdk/pipelines": "^1.105.0",
-    "@types/aws-lambda": "^8.10.76",
-    "cdk-watch": "0.0.22"
+    "@types/aws-lambda": "^8.10.76"
   }
 }

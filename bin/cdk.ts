@@ -11,11 +11,20 @@ const app = new cdk.App();
 
 new CicdBackendStack(app, prefix + 'CicdBackendStack');
 
-const cognito = new CognitoStack(app, 'CognitoStack');
-const storage = new StorageStack(app, 'StorageStack');
+import * as cd from "aws-cdk"
+const s =  async () => {
+const aa = await cd.SdkProvider.withAwsCliCompatibleDefaults()
+aa.defaultRegion
+}
+
+// const region = "ap-northeast-1";
+const region = undefined;
+const cognito = new CognitoStack(app, 'CognitoStack', {env:{region}});
+const storage = new StorageStack(app, 'StorageStack', {env:{region}});
 const ticket = new TicketServiceStack(app, 'TicketServiceStack', {
     cognito,
     storage,
+    env:{region}
 });
 
 new CicdMobileStack(app, 'CicdMobileStack');
