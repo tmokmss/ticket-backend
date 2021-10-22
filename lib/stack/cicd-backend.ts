@@ -26,6 +26,7 @@ export class CicdBackendStack extends Stack {
                 oauthToken: SecretValue.secretsManager('github-token'),
                 owner: 'tmokmss',
                 repo: 'ticket-backend',
+                branch: 'main',
             }),
 
             synthAction: SimpleSynthAction.standardNpmSynth({
@@ -34,7 +35,6 @@ export class CicdBackendStack extends Stack {
                 buildCommand: 'npm run build',
             }),
         });
-
 
         const testStage = pipeline.addStage('Test');
         testStage.addActions(
