@@ -1,0 +1,1315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot test Storage stack 1`] = `
+Object {
+  "Resources": Object {
+    "ticketTable4EA4FD6F": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "AttributeDefinitions": Array [
+          Object {
+            "AttributeName": "userId",
+            "AttributeType": "S",
+          },
+          Object {
+            "AttributeName": "travelId",
+            "AttributeType": "S",
+          },
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "KeySchema": Array [
+          Object {
+            "AttributeName": "userId",
+            "KeyType": "HASH",
+          },
+          Object {
+            "AttributeName": "travelId",
+            "KeyType": "RANGE",
+          },
+        ],
+      },
+      "Type": "AWS::DynamoDB::Table",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+}
+`;
+
+exports[`Snapshot test TicketService stack 1`] = `
+Object {
+  "Outputs": Object {
+    "apiEndpoint9349E63C": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "apiC8550315",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "apiDeploymentStageprod896C8101",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8ArtifactHashF5EFA2DF": Object {
+      "Description": "Artifact hash for asset \\"27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8\\"",
+      "Type": "String",
+    },
+    "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8S3Bucket2957AA23": Object {
+      "Description": "S3 bucket for asset \\"27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8\\"",
+      "Type": "String",
+    },
+    "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8S3VersionKeyC3B83208": Object {
+      "Description": "S3 key for asset version \\"27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8\\"",
+      "Type": "String",
+    },
+    "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfArtifactHash7F450F81": Object {
+      "Description": "Artifact hash for asset \\"7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cf\\"",
+      "Type": "String",
+    },
+    "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfS3Bucket2D697F10": Object {
+      "Description": "S3 bucket for asset \\"7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cf\\"",
+      "Type": "String",
+    },
+    "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfS3VersionKey96585AD2": Object {
+      "Description": "S3 key for asset version \\"7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cf\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "alias68BF17F5": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "travelHandler043A51C7",
+        },
+        "FunctionVersion": Object {
+          "Fn::GetAtt": Array [
+            "travelHandlerCurrentVersion05E7AD114b180d726ef4bd6e52a715fa84fdf059",
+            "Version",
+          ],
+        },
+        "Name": "prod-canary",
+      },
+      "Type": "AWS::Lambda::Alias",
+      "UpdatePolicy": Object {
+        "CodeDeployLambdaAliasUpdate": Object {
+          "ApplicationName": Object {
+            "Ref": "deploymentgroupApplicationC99BE100",
+          },
+          "DeploymentGroupName": Object {
+            "Ref": "deploymentgroup473BCAFE",
+          },
+        },
+      },
+    },
+    "apiAccount57E28B43": Object {
+      "DependsOn": Array [
+        "apiC8550315",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "apiCloudWatchRoleAC81D93E",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+    },
+    "apiC8550315": Object {
+      "Properties": Object {
+        "Name": "Travel Backend",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "apiCloudWatchRoleAC81D93E": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "apiDeployment149F1294e3b357dbbd9bab62079b460b843a94e4": Object {
+      "DependsOn": Array [
+        "apiticketsproxyANY4B76AB7E",
+        "apiticketsproxyOPTIONS166BA15E",
+        "apiticketsproxy18DC2979",
+        "apiticketsANY8EB69D7A",
+        "apiticketsOPTIONSD6F8512A",
+        "apitickets52B88AB1",
+        "apitravelsproxyANY98FF3CAB",
+        "apitravelsproxyOPTIONSF6B7537A",
+        "apitravelsproxy1276F692",
+        "apitravelsANY08024927",
+        "apitravelsOPTIONS1E41EF1D",
+        "apitravelsBC3FEF5D",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "apiDeploymentStageprod896C8101": Object {
+      "Properties": Object {
+        "DeploymentId": Object {
+          "Ref": "apiDeployment149F1294e3b357dbbd9bab62079b460b843a94e4",
+        },
+        "MethodSettings": Array [
+          Object {
+            "HttpMethod": "*",
+            "LoggingLevel": "INFO",
+            "ResourcePath": "/*",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "apitickets52B88AB1": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "apiC8550315",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "tickets",
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "apiticketsANY8EB69D7A": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "ticketHandlerA2BDC3CC",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "apitickets52B88AB1",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apiticketsANYApiPermissionStackapi3ECDF4F8ANYticketsD3F0CFD5": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ticketHandlerA2BDC3CC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/",
+              Object {
+                "Ref": "apiDeploymentStageprod896C8101",
+              },
+              "/*/tickets",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apiticketsANYApiPermissionTestStackapi3ECDF4F8ANYtickets174296F1": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ticketHandlerA2BDC3CC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/test-invoke-stage/*/tickets",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apiticketsOPTIONSD6F8512A": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "apitickets52B88AB1",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apiticketsproxy18DC2979": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "apitickets52B88AB1",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "apiticketsproxyANY4B76AB7E": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "ticketHandlerA2BDC3CC",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "apiticketsproxy18DC2979",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apiticketsproxyANYApiPermissionStackapi3ECDF4F8ANYticketsproxyBEE2BCD4": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ticketHandlerA2BDC3CC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/",
+              Object {
+                "Ref": "apiDeploymentStageprod896C8101",
+              },
+              "/*/tickets/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apiticketsproxyANYApiPermissionTestStackapi3ECDF4F8ANYticketsproxy7164FC56": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ticketHandlerA2BDC3CC",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/test-invoke-stage/*/tickets/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apiticketsproxyOPTIONS166BA15E": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "apiticketsproxy18DC2979",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apitravelsANY08024927": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Ref": "alias68BF17F5",
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "apitravelsBC3FEF5D",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apitravelsANYApiPermissionStackapi3ECDF4F8ANYtravelsB76732E0": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Ref": "alias68BF17F5",
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/",
+              Object {
+                "Ref": "apiDeploymentStageprod896C8101",
+              },
+              "/*/travels",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apitravelsANYApiPermissionTestStackapi3ECDF4F8ANYtravels8010B433": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Ref": "alias68BF17F5",
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/test-invoke-stage/*/travels",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apitravelsBC3FEF5D": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "apiC8550315",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "travels",
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "apitravelsOPTIONS1E41EF1D": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "apitravelsBC3FEF5D",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apitravelsproxy1276F692": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Ref": "apitravelsBC3FEF5D",
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "apitravelsproxyANY98FF3CAB": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "ANY",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Ref": "alias68BF17F5",
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "apitravelsproxy1276F692",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "apitravelsproxyANYApiPermissionStackapi3ECDF4F8ANYtravelsproxy72C1D32B": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Ref": "alias68BF17F5",
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/",
+              Object {
+                "Ref": "apiDeploymentStageprod896C8101",
+              },
+              "/*/travels/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apitravelsproxyANYApiPermissionTestStackapi3ECDF4F8ANYtravelsproxy1D0AF9AA": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Ref": "alias68BF17F5",
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "apiC8550315",
+              },
+              "/test-invoke-stage/*/travels/*",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "apitravelsproxyOPTIONSF6B7537A": Object {
+      "Properties": Object {
+        "AuthorizationType": "COGNITO_USER_POOLS",
+        "AuthorizerId": Object {
+          "Ref": "authorizerD23CB5CD",
+        },
+        "HttpMethod": "OPTIONS",
+        "Integration": Object {
+          "IntegrationResponses": Array [
+            Object {
+              "ResponseParameters": Object {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+              },
+              "StatusCode": "204",
+            },
+          ],
+          "RequestTemplates": Object {
+            "application/json": "{ statusCode: 200 }",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": Array [
+          Object {
+            "ResponseParameters": Object {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+            },
+            "StatusCode": "204",
+          },
+        ],
+        "ResourceId": Object {
+          "Ref": "apitravelsproxy1276F692",
+        },
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "authorizerD23CB5CD": Object {
+      "Properties": Object {
+        "IdentitySource": "method.request.header.Authorization",
+        "Name": "CognitoAuthorizer",
+        "ProviderARNs": Array [
+          Object {
+            "Fn::ImportValue": "CognitoStack:ExportsOutputFnGetAttuserPoolDC9497E0Arn08E3C4BB",
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "apiC8550315",
+        },
+        "Type": "COGNITO_USER_POOLS",
+      },
+      "Type": "AWS::ApiGateway::Authorizer",
+    },
+    "deploymentgroup473BCAFE": Object {
+      "Properties": Object {
+        "ApplicationName": Object {
+          "Ref": "deploymentgroupApplicationC99BE100",
+        },
+        "AutoRollbackConfiguration": Object {
+          "Enabled": true,
+          "Events": Array [
+            "DEPLOYMENT_FAILURE",
+          ],
+        },
+        "DeploymentConfigName": "CodeDeployDefault.LambdaLinear10PercentEvery1Minute",
+        "DeploymentStyle": Object {
+          "DeploymentOption": "WITH_TRAFFIC_CONTROL",
+          "DeploymentType": "BLUE_GREEN",
+        },
+        "ServiceRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "deploymentgroupServiceRole2EF73981",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::CodeDeploy::DeploymentGroup",
+    },
+    "deploymentgroupApplicationC99BE100": Object {
+      "Properties": Object {
+        "ComputePlatform": "Lambda",
+      },
+      "Type": "AWS::CodeDeploy::Application",
+    },
+    "deploymentgroupServiceRole2EF73981": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "codedeploy.",
+                      Object {
+                        "Ref": "AWS::Region",
+                      },
+                      ".",
+                      Object {
+                        "Ref": "AWS::URLSuffix",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSCodeDeployRoleForLambdaLimited",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ticketHandlerA2BDC3CC": Object {
+      "DependsOn": Array [
+        "ticketHandlerServiceRoleDefaultPolicy0053EEB2",
+        "ticketHandlerServiceRole966B4066",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8S3Bucket2957AA23",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8S3VersionKeyC3B83208",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters27955a231ee3ea388288756313aa02493a6640e58dc82f6fe56069a3f51b6ed8S3VersionKeyC3B83208",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+            "TICKET_TABLE_NAME": Object {
+              "Fn::ImportValue": "StorageStack:ExportsOutputRefticketTable4EA4FD6F2011B0A4",
+            },
+          },
+        },
+        "Handler": "index.lambdaHandler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "ticketHandlerServiceRole966B4066",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ticketHandlerServiceRole966B4066": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ticketHandlerServiceRoleDefaultPolicy0053EEB2": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::ImportValue": "StorageStack:ExportsOutputFnGetAttticketTable4EA4FD6FArn65AE3B9B",
+                },
+                Object {
+                  "Ref": "AWS::NoValue",
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ticketHandlerServiceRoleDefaultPolicy0053EEB2",
+        "Roles": Array [
+          Object {
+            "Ref": "ticketHandlerServiceRole966B4066",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "travelHandler043A51C7": Object {
+      "DependsOn": Array [
+        "travelHandlerServiceRole2D17232F",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfS3Bucket2D697F10",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfS3VersionKey96585AD2",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParameters7d50395333753a6c5df536bcd039cbfbd20e5189c8ded57209688da8005bb4cfS3VersionKey96585AD2",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
+          },
+        },
+        "Handler": "index.lambdaHandler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "travelHandlerServiceRole2D17232F",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "travelHandlerCurrentVersion05E7AD114b180d726ef4bd6e52a715fa84fdf059": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "travelHandler043A51C7",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
+    },
+    "travelHandlerServiceRole2D17232F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+}
+`;
+
+exports[`Snapshot test cognito stack 1`] = `
+Object {
+  "Resources": Object {
+    "userPoolDC9497E0": Object {
+      "Properties": Object {
+        "AccountRecoverySetting": Object {
+          "RecoveryMechanisms": Array [
+            Object {
+              "Name": "verified_phone_number",
+              "Priority": 1,
+            },
+            Object {
+              "Name": "verified_email",
+              "Priority": 2,
+            },
+          ],
+        },
+        "AdminCreateUserConfig": Object {
+          "AllowAdminCreateUserOnly": false,
+        },
+        "AutoVerifiedAttributes": Array [
+          "email",
+        ],
+        "EmailVerificationMessage": "The verification code to your new account is {####}",
+        "EmailVerificationSubject": "Verify your new account",
+        "Policies": Object {
+          "PasswordPolicy": Object {
+            "MinimumLength": 8,
+            "RequireNumbers": false,
+            "RequireSymbols": false,
+            "RequireUppercase": false,
+          },
+        },
+        "SmsVerificationMessage": "The verification code to your new account is {####}",
+        "UsernameAttributes": Array [
+          "email",
+        ],
+        "VerificationMessageTemplate": Object {
+          "DefaultEmailOption": "CONFIRM_WITH_CODE",
+          "EmailMessage": "The verification code to your new account is {####}",
+          "EmailSubject": "Verify your new account",
+          "SmsMessage": "The verification code to your new account is {####}",
+        },
+      },
+      "Type": "AWS::Cognito::UserPool",
+    },
+    "userPooldomainF1095B33": Object {
+      "Properties": Object {
+        "Domain": "ticket-c806938a3d76322a2d6953d8dfd8ddf69ed0f5c732",
+        "UserPoolId": Object {
+          "Ref": "userPoolDC9497E0",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolDomain",
+    },
+    "userPoolmobileClient73DF0FEC": Object {
+      "Properties": Object {
+        "AllowedOAuthFlows": Array [
+          "implicit",
+          "code",
+        ],
+        "AllowedOAuthFlowsUserPoolClient": true,
+        "AllowedOAuthScopes": Array [
+          "profile",
+          "phone",
+          "email",
+          "openid",
+          "aws.cognito.signin.user.admin",
+        ],
+        "CallbackURLs": Array [
+          "https://example.com",
+        ],
+        "IdTokenValidity": 1440,
+        "SupportedIdentityProviders": Array [
+          "COGNITO",
+        ],
+        "TokenValidityUnits": Object {
+          "IdToken": "minutes",
+        },
+        "UserPoolId": Object {
+          "Ref": "userPoolDC9497E0",
+        },
+      },
+      "Type": "AWS::Cognito::UserPoolClient",
+    },
+  },
+}
+`;

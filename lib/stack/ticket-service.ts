@@ -84,7 +84,7 @@ export class TicketServiceStack extends cdk.Stack {
                 },
                 environment: {
                 },
-                description: `Function generated on: ${new Date().toISOString()}`,
+                // description: `Function generated on: ${new Date().toISOString()}`,
             });
 
             const alias = new lambda.Alias(this, 'alias', {
